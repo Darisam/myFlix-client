@@ -1,4 +1,5 @@
 import React from 'react';
+import axios from 'axios';
 import { MovieCard } from '../movie-card/movie-card';
 import { MovieView } from '../movie-view/movie-view';
 
@@ -6,41 +7,24 @@ export class MainView extends React.Component {
   constructor() {
     super();
     this.state = {
-      movies: [
-        {
-          _id: 1,
-          Title: 'The Silence of the Lambs',
-          Description:
-            'A young FBI cadet must receive the help of an incarcerated and manipulative cannibal killer to help catch another serial killer.',
-          Director: 'Jonathan Demme',
-          Genre: 'Thriller',
-          ImagePath: '../../img/placeholder.png',
-        },
-        {
-          _id: 2,
-          Title: 'The Terminator',
-          Description:
-            'A human-like robot is sent from a future wher machines rule Earth to kill the mother of the future leader of the resistance against the machines before he is born.',
-          Director: 'James Cameron',
-          Genre: 'Action',
-          ImagePath: '../../img/placeholder.png',
-        },
-        {
-          _id: 3,
-          Title: 'Spirited Away',
-          Description:
-            "10 year old girl Chihiro enter the spirit world after her parents have been turned into pigs by the witch Yubaba. She takes a job in Yubaba's bathhouse in the hope of undoing the enchantment and finding a way to return to the human world.",
-          Director: 'Hayao Miyazaki',
-          Genre: 'Animated',
-          ImagePath: '../../img/placeholder.png',
-        },
-      ],
+      movies: [],
       selectedMovie: null,
     };
   }
 
   setSelectedMovie(newSelectedMovie) {
     this.setState({ selectedMovie: newSelectedMovie });
+  }
+
+  componentDidMount() {
+    axios
+      .get('https://klaus-movies.herokuapp.com/movies')
+      .then((response) => {
+        this.setState({ movies: response.data });
+      })
+      .catch((error) => {
+        console.error(error);
+      });
   }
 
   render() {
