@@ -1,23 +1,32 @@
 {
   "name": "myflix-client",
   "version": "1.0.0",
-  "description": "",
+  "description": "This repository will hold the front-end for the movie-api.",
+  "source": "src/index.html",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Darisam/myFlix-client.git"
+  },
   "author": "Klaus Ideler",
   "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Darisam/myFlix-client/issues"
+  },
+  "homepage": "https://github.com/Darisam/myFlix-client#readme",
   "dependencies": {
     "axios": "^0.27.2",
+    "prop-types": "^15.8.1",
     "react": "^18.1.0",
     "react-dom": "^18.1.0"
   },
   "devDependencies": {
-    "@babel/cli": "^7.17.6",
-    "@babel/core": "^7.17.9",
-    "@babel/preset-env": "^7.16.11",
+    "@babel/cli": "^7.17.10",
+    "@babel/core": "^7.17.10",
+    "@babel/preset-env": "^7.17.10",
     "@babel/preset-react": "^7.16.7",
-    "@parcel/transformer-image": "^2.0.0-rc.0",
     "@parcel/transformer-sass": "^2.0.0-rc.0"
   }
 }
