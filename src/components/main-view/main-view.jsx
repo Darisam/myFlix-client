@@ -14,10 +14,6 @@ export class MainView extends React.Component {
     };
   }
 
-  setSelectedMovie(newSelectedMovie) {
-    this.setState({ selectedMovie: newSelectedMovie });
-  }
-
   componentDidMount() {
     axios
       .get('https://klaus-movies.herokuapp.com/movies')
@@ -27,6 +23,10 @@ export class MainView extends React.Component {
       .catch((error) => {
         console.error(error);
       });
+  }
+
+  setSelectedMovie(newSelectedMovie) {
+    this.setState({ selectedMovie: newSelectedMovie });
   }
 
   onLoggedIn(user) {
@@ -46,6 +46,10 @@ export class MainView extends React.Component {
       );
     }
 
+    if (movies.length === 0) {
+      return <div className="main-view" />;
+    }
+
     if (selectedMovie) {
       return (
         <MovieView
@@ -55,24 +59,20 @@ export class MainView extends React.Component {
           }}
         />
       );
+    } else {
+      return (
+        <div className="main-view">
+          {movies.map((movie) => (
+            <MovieCard
+              key={movie._id}
+              movie={movie}
+              onCardClick={(clickedMovie) => {
+                this.setSelectedMovie(clickedMovie);
+              }}
+            />
+          ))}
+        </div>
+      );
     }
-
-    if (movies.length === 0) {
-      return <div className="main-view">The list is empty</div>;
-    }
-
-    return (
-      <div className="main-view">
-        {movies.map((movie) => (
-          <MovieCard
-            key={movie._id}
-            movie={movie}
-            onCardClick={(clickedMovie) => {
-              this.setSelectedMovie(clickedMovie);
-            }}
-          />
-        ))}
-      </div>
-    );
   }
 }
