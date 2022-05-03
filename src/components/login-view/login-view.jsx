@@ -13,34 +13,46 @@ export function LoginView(props) {
   };
 
   return (
-    <form>
-      <label htmlFor="username">Username:</label>
-      <input
-        type="text"
-        id="username"
-        name="username"
-        value={username}
-        onChange={(event) => {
-          setUsername(event.target.value);
-        }}
-      />
-      <label htmlFor="password">Password:</label>
-      <input
-        type="text"
-        id="password"
-        name="password"
-        value={password}
-        onChange={(event) => {
-          setPassword(event.target.value);
-        }}
-      />
-      <button type="submit" onClick={handleSubmit}>
-        Submit
-      </button>
-    </form>
+    <div>
+      <div>
+        <form>
+          <label htmlFor="username">Username:</label>
+          <input
+            type="text"
+            id="username"
+            name="username"
+            value={username}
+            onChange={(event) => {
+              setUsername(event.target.value);
+            }}
+          />
+          <br />
+          <label htmlFor="password">Password:</label>
+          <input
+            type="text"
+            id="password"
+            name="password"
+            value={password}
+            onChange={(event) => {
+              setPassword(event.target.value);
+            }}
+          />
+          <button type="submit" onClick={handleSubmit}>
+            Submit
+          </button>
+        </form>
+      </div>
+      <div>
+        Not registered?
+        <button type="button" onClick={props.onUnregistered}>
+          Register Now
+        </button>
+      </div>
+    </div>
   );
 }
 
 LoginView.propTypes = {
   onLoggedIn: PropTypes.func.isRequired,
+  onUnregistered: PropTypes.func.isRequired,
 };
