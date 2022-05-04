@@ -28942,7 +28942,9 @@ var MovieView1 = /*#__PURE__*/ function(_React$Component) {
                 }, /*#__PURE__*/ _react["default"].createElement("div", {
                     className: "movie-poster"
                 }, /*#__PURE__*/ _react["default"].createElement("img", {
-                    src: require('../../img/placeholder.png'),
+                    src: movie.ImagePath,
+                    width: "100",
+                    height: "200",
                     alt: ""
                 })), /*#__PURE__*/ _react["default"].createElement("div", {
                     className: "movie-title"
@@ -29004,45 +29006,7 @@ MovieView1.propTypes = {
   window.$RefreshReg$ = prevRefreshReg;
   window.$RefreshSig$ = prevRefreshSig;
 }
-},{"react":"6TuXu","prop-types":"1tgq3","@parcel/transformer-react-refresh-wrap/lib/helpers/helpers.js":"kWUaH","../../img/placeholder.png":"jP9lP"}],"jP9lP":[function(require,module,exports) {
-module.exports = require('./helpers/bundle-url').getBundleURL('3VpAv') + "placeholder.681b3499.png";
-
-},{"./helpers/bundle-url":"96qQH"}],"96qQH":[function(require,module,exports) {
-"use strict";
-var bundleURL = {
-};
-function getBundleURLCached(id) {
-    var value = bundleURL[id];
-    if (!value) {
-        value = getBundleURL();
-        bundleURL[id] = value;
-    }
-    return value;
-}
-function getBundleURL() {
-    try {
-        throw new Error();
-    } catch (err) {
-        var matches = ('' + err.stack).match(/(https?|file|ftp):\/\/[^)\n]+/g);
-        if (matches) // The first two stack frames will be this function and getBundleURLCached.
-        // Use the 3rd one, which will be a runtime in the original bundle.
-        return getBaseURL(matches[2]);
-    }
-    return '/';
-}
-function getBaseURL(url) {
-    return ('' + url).replace(/^((?:https?|file|ftp):\/\/.+)\/[^/]+$/, '$1') + '/';
-} // TODO: Replace uses with `new URL(url).origin` when ie11 is no longer supported.
-function getOrigin(url) {
-    var matches = ('' + url).match(/(https?|file|ftp):\/\/[^/]+/);
-    if (!matches) throw new Error('Origin not found');
-    return matches[0];
-}
-exports.getBundleURL = getBundleURLCached;
-exports.getBaseURL = getBaseURL;
-exports.getOrigin = getOrigin;
-
-},{}],"054li":[function(require,module,exports) {
+},{"react":"6TuXu","prop-types":"1tgq3","@parcel/transformer-react-refresh-wrap/lib/helpers/helpers.js":"kWUaH"}],"054li":[function(require,module,exports) {
 var $parcel$ReactRefreshHelpers$02dd = require("@parcel/transformer-react-refresh-wrap/lib/helpers/helpers.js");
 var prevRefreshReg = window.$RefreshReg$;
 var prevRefreshSig = window.$RefreshSig$;
@@ -29146,15 +29110,16 @@ function LoginView(props) {
     var _useState3 = _react.useState(''), _useState4 = _slicedToArray(_useState3, 2), password = _useState4[0], setPassword = _useState4[1];
     var handleSubmit = function handleSubmit1(event) {
         event.preventDefault();
-        console.log(username, password); // To Do: Authenticate User, then register user as logged in
+        console.log(username, password); // To Do: Authenticate User
         props.onLoggedIn(username);
     };
-    return(/*#__PURE__*/ _react["default"].createElement("div", null, /*#__PURE__*/ _react["default"].createElement("div", null, /*#__PURE__*/ _react["default"].createElement("form", null, /*#__PURE__*/ _react["default"].createElement("label", {
+    return(/*#__PURE__*/ _react["default"].createElement("div", null, /*#__PURE__*/ _react["default"].createElement("form", null, /*#__PURE__*/ _react["default"].createElement("label", {
         htmlFor: "username"
     }, "Username:"), /*#__PURE__*/ _react["default"].createElement("input", {
         type: "text",
         id: "username",
         name: "username",
+        autoFocus: true,
         value: username,
         onChange: function onChange(event) {
             setUsername(event.target.value);
@@ -29169,10 +29134,10 @@ function LoginView(props) {
         onChange: function onChange(event) {
             setPassword(event.target.value);
         }
-    }), /*#__PURE__*/ _react["default"].createElement("button", {
+    }), /*#__PURE__*/ _react["default"].createElement("br", null), /*#__PURE__*/ _react["default"].createElement("button", {
         type: "submit",
         onClick: handleSubmit
-    }, "Submit"))), /*#__PURE__*/ _react["default"].createElement("div", null, "Not registered?", /*#__PURE__*/ _react["default"].createElement("button", {
+    }, "Submit")), /*#__PURE__*/ _react["default"].createElement("p", null, "Not registered?", /*#__PURE__*/ _react["default"].createElement("br", null), /*#__PURE__*/ _react["default"].createElement("button", {
         type: "button",
         onClick: props.onUnregistered
     }, "Register Now"))));
@@ -29294,22 +29259,45 @@ function RegistrationView(props) {
     var _useState3 = _react.useState(''), _useState4 = _slicedToArray(_useState3, 2), Password = _useState4[0], setPassword = _useState4[1];
     var _useState5 = _react.useState(''), _useState6 = _slicedToArray(_useState5, 2), Email = _useState6[0], setEmail = _useState6[1];
     var _useState7 = _react.useState(''), _useState8 = _slicedToArray(_useState7, 2), Birthday = _useState8[0], setBirthday = _useState8[1];
-    var handleSubmit = function handleSubmit1() {
-        var newUser = {
-            Username: Username,
-            Password: Password,
-            Email: Email,
-            Birthday: Birthday
+    var validateUsername = function validateUsername1(username) {
+        return {
+            isNotValid: username === '',
+            message: 'Please enter a username.'
         };
-        console.log(newUser); // To do: Submit new user to movie.api
-        props.onRegistered(Username);
+    };
+    var validateEmail = function validateEmail1(email) {
+        return {
+            isNotValid: !email.includes('@'),
+            message: 'Please enter a valid E-mail address.'
+        };
+    };
+    var validatePassword = function validatePassword1(password) {
+        return {
+            isNotValid: password.length < 8,
+            message: 'The password needs to be at least 8 characters long.'
+        };
+    };
+    var handleSubmit = function handleSubmit1() {
+        if (validateUsername(Username).isNotValid) alert(validateUsername(Username).message);
+        else if (validateEmail(Email).isNotValid) alert(validateEmail(Email).message);
+        else if (validatePassword(Password).isNotValid) alert(validatePassword(Password).message);
+        else {
+            var newUser = {
+                Username: Username,
+                Password: Password,
+                Email: Email,
+                Birthday: Birthday
+            };
+            console.log(newUser); // To do: Submit new user to movie.api
+            props.onRegistered(Username);
+        }
     };
     return(/*#__PURE__*/ _react["default"].createElement("form", null, /*#__PURE__*/ _react["default"].createElement("label", {
         htmlFor: "username"
     }, "Username:"), /*#__PURE__*/ _react["default"].createElement("input", {
         id: "username",
         type: "text",
-        required: true,
+        autoFocus: true,
         onChange: function onChange(event) {
             setUsername(event.target.value);
         }
@@ -29318,7 +29306,6 @@ function RegistrationView(props) {
     }, "E-mail:"), /*#__PURE__*/ _react["default"].createElement("input", {
         id: "email",
         type: "email",
-        required: true,
         onChange: function onChange(event) {
             setEmail(event.target.value);
         }
@@ -29327,7 +29314,6 @@ function RegistrationView(props) {
     }, "Password:"), /*#__PURE__*/ _react["default"].createElement("input", {
         id: "password",
         type: "text",
-        required: true,
         onChange: function onChange(event) {
             setPassword(event.target.value);
         }
