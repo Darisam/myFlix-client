@@ -8,7 +8,7 @@ export class MovieView extends React.Component {
     return (
       <div className="movie-view">
         <div className="movie-poster">
-          <img src={require('../../img/placeholder.png')} alt="" />
+          <img src={movie.ImagePath} alt="" />
         </div>
         <div className="movie-title">
           <span className="label">Title: </span>
