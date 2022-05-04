@@ -7,11 +7,37 @@ export function RegistrationView(props) {
   const [Email, setEmail] = useState('');
   const [Birthday, setBirthday] = useState('');
 
+  const validateUsername = (username) => {
+    return { isNotValid: username === '', message: 'Please enter a username.' };
+  };
+
+  const validateEmail = (email) => {
+    return {
+      isNotValid: !email.includes('@'),
+      message: 'Please enter a valid E-mail address.',
+    };
+  };
+
+  const validatePassword = (password) => {
+    return {
+      isNotValid: password.length < 8,
+      message: 'The password needs to be at least 8 characters long.',
+    };
+  };
+
   const handleSubmit = () => {
-    let newUser = { Username, Password, Email, Birthday };
-    console.log(newUser);
-    // To do: Submit new user to movie.api
-    props.onRegistered(Username);
+    if (validateUsername(Username).isNotValid) {
+      alert(validateUsername(Username).message);
+    } else if (validateEmail(Email).isNotValid) {
+      alert(validateEmail(Email).message);
+    } else if (validatePassword(Password).isNotValid) {
+      alert(validatePassword(Password).message);
+    } else {
+      let newUser = { Username, Password, Email, Birthday };
+      console.log(newUser);
+      // To do: Submit new user to movie.api
+      props.onRegistered(Username);
+    }
   };
 
   return (
@@ -20,7 +46,7 @@ export function RegistrationView(props) {
       <input
         id="username"
         type="text"
-        required
+        autoFocus
         onChange={(event) => {
           setUsername(event.target.value);
         }}
@@ -30,7 +56,6 @@ export function RegistrationView(props) {
       <input
         id="email"
         type="email"
-        required
         onChange={(event) => {
           setEmail(event.target.value);
         }}
@@ -40,7 +65,6 @@ export function RegistrationView(props) {
       <input
         id="password"
         type="text"
-        required
         onChange={(event) => {
           setPassword(event.target.value);
         }}
