@@ -1,5 +1,9 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
+import Form from 'react-bootstrap/Form';
+import Button from 'react-bootstrap/Button';
+
+import './registration-view.scss';
 
 export function RegistrationView(props) {
   const [Username, setUsername] = useState('');
@@ -41,48 +45,51 @@ export function RegistrationView(props) {
   };
 
   return (
-    <form>
-      <label htmlFor="username">Username:</label>
-      <input
-        id="username"
-        type="text"
-        autoFocus
-        onChange={(event) => {
-          setUsername(event.target.value);
-        }}
-      />
-      <br />
-      <label htmlFor="email">E-mail:</label>
-      <input
-        id="email"
-        type="email"
-        onChange={(event) => {
-          setEmail(event.target.value);
-        }}
-      />
-      <br />
-      <label htmlFor="password">Password:</label>
-      <input
-        id="password"
-        type="text"
-        onChange={(event) => {
-          setPassword(event.target.value);
-        }}
-      />
-      <br />
-      <label htmlFor="birthday">Birthday:</label>
-      <input
-        id="birthday"
-        type="date"
-        onChange={(event) => {
-          setBirthday(event.target.value);
-        }}
-      />
-      <br />
-      <button type="button" onClick={handleSubmit}>
+    <Form className="mt-4 registration-form" onSubmit={handleSubmit}>
+      <Form.Group controlId="registerUsername" className="mb-3">
+        <Form.Label>Username:</Form.Label>
+        <Form.Control
+          type="text"
+          onChange={(event) => {
+            setUsername(event.target.value);
+          }}
+        />
+      </Form.Group>
+      <Form.Group controlId="registerEmail" className="mb-3">
+        <Form.Label>E-mail:</Form.Label>
+        <Form.Control
+          type="email"
+          onChange={(event) => {
+            setEmail(event.target.value);
+          }}
+        />
+      </Form.Group>
+      <Form.Group controlId="registerPassword" className="mb-3">
+        <Form.Label>Password:</Form.Label>
+        <Form.Control
+          type="text"
+          onChange={(event) => {
+            setPassword(event.target.value);
+          }}
+        />
+      </Form.Group>
+      <Form.Group controlId="registerBirthday" className="mb-3">
+        <Form.Label>Birthday:</Form.Label>
+        <Form.Control
+          type="date"
+          onChange={(event) => {
+            setBirthday(event.target.value);
+          }}
+        />
+      </Form.Group>
+      <Button
+        className="button-color border border-dark rounded mt-3 clickable"
+        type="button"
+        onClick={handleSubmit}
+      >
         Submit
-      </button>
-    </form>
+      </Button>
+    </Form>
   );
 }
 
