@@ -1,46 +1,55 @@
 import React, { useState } from 'react';
-import PropTypes from 'prop-types';
+import axios from 'axios';
+
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 
 import './registration-view.scss';
 
-export function RegistrationView(props) {
-  const [Username, setUsername] = useState('');
-  const [Password, setPassword] = useState('');
-  const [Email, setEmail] = useState('');
-  const [Birthday, setBirthday] = useState('');
+export function RegistrationView() {
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
+  const [email, setEmail] = useState('');
+  const [birthday, setBirthday] = useState('');
+  const [usernameErr, setUsernameErr] = useState('');
+  const [passwordErr, setPasswordErr] = useState('');
+  const [emailErr, setEmailErr] = useState('');
 
-  const validateUsername = (username) => {
-    return { isNotValid: username === '', message: 'Please enter a username.' };
-  };
+  const newUserValid = () => {
+    let usernameValid = username !== '';
+    let passwordValid = password.length > 7;
+    let emailValid = email.includes('@');
 
-  const validateEmail = (email) => {
-    return {
-      isNotValid: !email.includes('@'),
-      message: 'Please enter a valid E-mail address.',
-    };
-  };
+    setUsernameErr(usernameValid ? '' : 'Please enter a Username.');
+    setPasswordErr(
+      passwordValid
+        ? ''
+        : 'You need to set a password that contains at least eight characters.'
+    );
+    setEmailErr(emailValid ? '' : 'Please enter a valid email address.');
 
-  const validatePassword = (password) => {
-    return {
-      isNotValid: password.length < 8,
-      message: 'The password needs to be at least 8 characters long.',
-    };
+    return usernameValid && passwordValid && emailValid;
   };
 
   const handleSubmit = () => {
-    if (validateUsername(Username).isNotValid) {
-      alert(validateUsername(Username).message);
-    } else if (validateEmail(Email).isNotValid) {
-      alert(validateEmail(Email).message);
-    } else if (validatePassword(Password).isNotValid) {
-      alert(validatePassword(Password).message);
-    } else {
-      let newUser = { Username, Password, Email, Birthday };
-      console.log(newUser);
-      // To do: Submit new user to movie.api
-      props.onRegistered(Username);
+    if (newUserValid()) {
+      let userData = { Username: username, Password: password, Email: email };
+      if (birthday) {
+        userData.Birthday = birthday;
+      }
+      axios({
+        method: 'post',
+        url: 'https://klaus-movies.herokuapp.com/users',
+        data: userData,
+      })
+        .then((response) => {
+          const reply = response.data;
+          console.log(reply);
+          window.open('/', '_self');
+        })
+        .catch((error) => {
+          console.error(error.response);
+        });
     }
   };
 
@@ -54,6 +63,7 @@ export function RegistrationView(props) {
             setUsername(event.target.value);
           }}
         />
+        {usernameErr && <p className="text-warning">{usernameErr}</p>}
       </Form.Group>
       <Form.Group controlId="registerEmail" className="mb-3">
         <Form.Label>E-mail:</Form.Label>
@@ -63,15 +73,17 @@ export function RegistrationView(props) {
             setEmail(event.target.value);
           }}
         />
+        {emailErr && <p className="text-warning">{emailErr}</p>}
       </Form.Group>
       <Form.Group controlId="registerPassword" className="mb-3">
         <Form.Label>Password:</Form.Label>
         <Form.Control
-          type="text"
+          type="password"
           onChange={(event) => {
             setPassword(event.target.value);
           }}
         />
+        {passwordErr && <p className="text-warning">{passwordErr}</p>}
       </Form.Group>
       <Form.Group controlId="registerBirthday" className="mb-3">
         <Form.Label>Birthday:</Form.Label>
@@ -92,7 +104,3 @@ export function RegistrationView(props) {
     </Form>
   );
 }
-
-RegistrationView.propTypes = {
-  onRegistered: PropTypes.func.isRequired,
-};
