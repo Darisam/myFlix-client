@@ -1,22 +1,32 @@
 import React, { useState } from 'react';
+import axios from 'axios';
+
 import PropTypes from 'prop-types';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
+import { Link } from 'react-router-dom';
 
 import './login-view.scss';
-import '../../index.scss';
 
 export function LoginView(props) {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
 
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    console.log(username, password);
-    // To Do: Authenticate User
-    props.onLoggedIn(username);
+  const handleSubmit = () => {
+    axios({
+      method: 'post',
+      url: 'https://klaus-movies.herokuapp.com/login',
+      params: { Username: username, Password: password },
+    })
+      .then((response) => {
+        const data = response.data;
+        props.onLoggedIn(data);
+      })
+      .catch((error) => {
+        console.error(error);
+      });
   };
 
   return (
@@ -34,7 +44,7 @@ export function LoginView(props) {
         <Form.Group controlId="formPassword" className="mb-3">
           <Form.Label>Password:</Form.Label>
           <Form.Control
-            type="text"
+            type="password"
             onChange={(event) => {
               setPassword(event.target.value);
             }}
@@ -42,7 +52,7 @@ export function LoginView(props) {
         </Form.Group>
         <Button
           className="button-color border border-dark rounded clickable"
-          type="submit"
+          type="button"
           onClick={handleSubmit}
         >
           Log In
@@ -54,13 +64,15 @@ export function LoginView(props) {
           <p className="font-weight-bold lead">Not registered?</p>
         </Col>
         <Col xs="auto">
-          <Button
-            type="button"
-            className="border border-dark rounded button-color clickable"
-            onClick={props.onUnregistered}
-          >
-            Register Now
-          </Button>
+          <Link to={'/registration'}>
+            <Button
+              type="button"
+              className="border border-dark rounded button-color clickable"
+              role="presentation"
+            >
+              Register Now
+            </Button>
+          </Link>
         </Col>
       </Row>
     </div>
@@ -69,5 +81,4 @@ export function LoginView(props) {
 
 LoginView.propTypes = {
   onLoggedIn: PropTypes.func.isRequired,
-  onUnregistered: PropTypes.func.isRequired,
 };
