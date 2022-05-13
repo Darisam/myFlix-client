@@ -1,20 +1,87 @@
 import React from 'react';
+import axios from 'axios';
+
 import PropTypes from 'prop-types';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Button from 'react-bootstrap/Button';
+import { Link } from 'react-router-dom';
 
 import './movie-view.scss';
-import '../../index.scss';
 
 export class MovieView extends React.Component {
+  isMovieFavorite(user, movie) {
+    return user.FavoriteMovies.includes(movie._id);
+  }
+
+  toggleFavorite(user, movie, onUserChange) {
+    const username = user.Username;
+    const accessToken = localStorage.getItem('token');
+
+    if (this.isMovieFavorite(user, movie)) {
+      axios({
+        url: `https://klaus-movies.herokuapp.com/users/${username}/favorites/${movie._id}`,
+        method: 'delete',
+        headers: { Authorization: `Bearer ${accessToken}` },
+        responseType: 'text',
+      })
+        .then((response) => {
+          console.log(response);
+          let newFavorites = user.FavoriteMovies.filter(
+            (item) => item !== movie._id
+          );
+          user.FavoriteMovies = newFavorites;
+          onUserChange(user);
+        })
+        .catch((error) => {
+          console.erorr(error);
+        });
+    } else {
+      axios({
+        url: `https://klaus-movies.herokuapp.com/users/${username}/favorites/${movie._id}`,
+        method: 'put',
+        headers: { Authorization: `Bearer ${accessToken}` },
+      })
+        .then((response) => {
+          console.log(response);
+          user.FavoriteMovies.push(movie._id);
+          onUserChange(user);
+        })
+        .catch((error) => {
+          console.error(error);
+        });
+    }
+  }
+
   render() {
-    const { movie, onBackClick } = this.props;
+    const { movie, user, onBackClick, onUserChange } = this.props;
 
     return (
       <div className="movie-view">
-        <Row className="justify-content-center mb-4">
-          <Col xs={8} className="movie-poster p-2">
+        <Row>
+          <Col xs="auto">
+            <Button size="lg" onClick={onBackClick}>
+              &lt;
+            </Button>
+          </Col>
+          <Col xs="auto">
+            <h1>{movie.Title}</h1>
+          </Col>
+          <Col xs="auto">
+            <Button
+              size="lg"
+              className="like-button clickable"
+              onClick={() => {
+                this.toggleFavorite(user, movie, onUserChange);
+              }}
+            >
+              {this.isMovieFavorite(user, movie) ? '\u2605' : '\u2606'}{' '}
+            </Button>
+          </Col>
+        </Row>
+
+        <Row className="mb-4 mt-5">
+          <Col md={5} className="movie-poster p-2 mb-5">
             <img
               crossorigin="anonymous"
               src={movie.ImagePath}
@@ -22,45 +89,44 @@ export class MovieView extends React.Component {
               alt=""
             />
           </Col>
-        </Row>
-        <Row className="movie-title justify-content-center">
-          <Col xs="auto">
-            <h1>{movie.Title}</h1>
-          </Col>
-        </Row>
-        <Row className="movie-director">
-          <Col xs={3} className="label">
-            Director:{' '}
-          </Col>
-          <Col xs={9} className="value">
-            {movie.Director.Name}
-          </Col>
-        </Row>
-        <Row className="movie-description">
-          <Col xs={3} className="label">
-            Description:{' '}
-          </Col>
-          <Col xs={9} className="value">
-            {movie.Description}
-          </Col>
-        </Row>
-        <Row className="movie-genre">
-          <Col xs={3} className="label">
-            Genre:{' '}
-          </Col>
-          <Col xs={9} className="value">
-            {movie.Genre.Name}
-          </Col>
-        </Row>
-        <Row className="back-button justify-content-end mt-3">
-          <Col xs="auto">
-            <Button
-              onClick={onBackClick}
-              className="button-color clickable border border-dark rounded clickable"
-              size="sm"
-            >
-              Back to Main View
-            </Button>
+
+          <Col md={7} className="pl-5">
+            <Row className="movie-director">
+              <Col xs={3} className="label ">
+                Director:{' '}
+              </Col>
+              <Col xs={9} className="value ">
+                <Link
+                  to={`/directors/${movie.Director.Name}`}
+                  className="link clickable"
+                >
+                  {movie.Director.Name}
+                </Link>
+              </Col>
+            </Row>
+
+            <Row className="movie-genre">
+              <Col xs={3} className="label ">
+                Genre:{' '}
+              </Col>
+              <Col xs={9} className="value">
+                <Link
+                  to={`/genres/${movie.Genre.Name}`}
+                  className="link clickable"
+                >
+                  {movie.Genre.Name}
+                </Link>
+              </Col>
+            </Row>
+
+            <Row className="movie-description">
+              <Col xs={3} className="label ">
+                Description:{' '}
+              </Col>
+              <Col xs={9} className="value ">
+                {movie.Description}
+              </Col>
+            </Row>
           </Col>
         </Row>
       </div>
@@ -70,6 +136,7 @@ export class MovieView extends React.Component {
 
 MovieView.propTypes = {
   movie: PropTypes.shape({
+    _id: PropTypes.string.isRequired,
     Title: PropTypes.string.isRequired,
     Description: PropTypes.string.isRequired,
     ImagePath: PropTypes.string.isRequired,
@@ -86,5 +153,14 @@ MovieView.propTypes = {
     Featured: PropTypes.bool.isRequired,
   }).isRequired,
 
+  user: PropTypes.shape({
+    _id: PropTypes.string.isRequired,
+    Username: PropTypes.string.isRequired,
+    Password: PropTypes.string.isRequired,
+    Birthday: PropTypes.string,
+    FavoriteMovies: PropTypes.array.isRequired,
+  }).isRequired,
+
+  onUserChange: PropTypes.func.isRequired,
   onBackClick: PropTypes.func.isRequired,
 };
