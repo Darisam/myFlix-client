@@ -1,5 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import Row from 'react-bootstrap/Row';
+import Col from 'react-bootstrap/Col';
+import Button from 'react-bootstrap/Button';
+
+import './movie-view.scss';
+import '../../index.scss';
 
 export class MovieView extends React.Component {
   render() {
@@ -7,28 +13,56 @@ export class MovieView extends React.Component {
 
     return (
       <div className="movie-view">
-        <div className="movie-poster">
-          <img src={movie.ImagePath} width="100" height="200" alt="" />
-        </div>
-        <div className="movie-title">
-          <span className="label">Title: </span>
-          <span className="value">{movie.Title}</span>
-        </div>
-        <div className="movie-director">
-          <span className="label">Director: </span>
-          <span className="value">{movie.Director.Name}</span>
-        </div>
-        <div className="movie-description">
-          <span className="label">Description: </span>
-          <span className="value">{movie.Description}</span>
-        </div>
-        <div className="movie-genre">
-          <span className="label">Genre: </span>
-          <span className="value">{movie.Genre.Name}</span>
-        </div>
-        <div className="back-button">
-          <button onClick={onBackClick}>Back to Main View</button>
-        </div>
+        <Row className="justify-content-center mb-4">
+          <Col xs={8} className="movie-poster p-2">
+            <img
+              crossorigin="anonymous"
+              src={movie.ImagePath}
+              width="100%"
+              alt=""
+            />
+          </Col>
+        </Row>
+        <Row className="movie-title justify-content-center">
+          <Col xs="auto">
+            <h1>{movie.Title}</h1>
+          </Col>
+        </Row>
+        <Row className="movie-director">
+          <Col xs={3} className="label">
+            Director:{' '}
+          </Col>
+          <Col xs={9} className="value">
+            {movie.Director.Name}
+          </Col>
+        </Row>
+        <Row className="movie-description">
+          <Col xs={3} className="label">
+            Description:{' '}
+          </Col>
+          <Col xs={9} className="value">
+            {movie.Description}
+          </Col>
+        </Row>
+        <Row className="movie-genre">
+          <Col xs={3} className="label">
+            Genre:{' '}
+          </Col>
+          <Col xs={9} className="value">
+            {movie.Genre.Name}
+          </Col>
+        </Row>
+        <Row className="back-button justify-content-end mt-3">
+          <Col xs="auto">
+            <Button
+              onClick={onBackClick}
+              className="button-color clickable border border-dark rounded clickable"
+              size="sm"
+            >
+              Back to Main View
+            </Button>
+          </Col>
+        </Row>
       </div>
     );
   }

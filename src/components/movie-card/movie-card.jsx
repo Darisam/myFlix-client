@@ -1,18 +1,35 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import Card from 'react-bootstrap/Card';
+import Button from 'react-bootstrap/Button';
+
+import './movie-card.scss';
+import '../../index.scss';
 
 export class MovieCard extends React.Component {
   render() {
     const { movie, onCardClick } = this.props;
     return (
-      <div
-        className="movie-card"
+      <Card
+        className="movie-card clickable card-color"
         onClick={() => {
           onCardClick(movie);
         }}
       >
-        {movie.Title}
-      </div>
+        <Card.Img variant="top" crossorigin="anonymous" src={movie.ImagePath} />
+        <Card.Body>
+          <Card.Title>{movie.Title}</Card.Title>
+          <Card.Text>{movie.Description}</Card.Text>
+          <Button
+            onClick={() => {
+              onCardClick(movie);
+            }}
+            className="sr-only sr-only-focusable"
+          >
+            Open
+          </Button>
+        </Card.Body>
+      </Card>
     );
   }
 }
