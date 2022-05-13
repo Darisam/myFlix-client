@@ -1,5 +1,9 @@
 .movie-card {
-  height: 100%;
   max-width: 20rem;
   margin: auto;
+  height: 100%;
+}
+
+.clickable:hover {
+  text-decoration: none;
 }
