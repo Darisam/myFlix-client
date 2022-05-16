@@ -2,16 +2,17 @@ import React from 'react';
 
 import PropTypes from 'prop-types';
 import Card from 'react-bootstrap/Card';
+import Button from 'react-bootstrap/Button';
 import { Link } from 'react-router-dom';
 
 import './movie-card.scss';
 
 export class MovieCard extends React.Component {
   render() {
-    const { movie } = this.props;
+    const { movie, profile, movieDelete } = this.props;
     return (
-      <Link to={`/movies/${movie._id}`} className="clickable">
-        <Card className="movie-card card-color">
+      <Link to={`/movies/${movie._id}`} className="card-color movie-link">
+        <Card className="movie-card card-color clickable">
           <Card.Img
             variant="top"
             crossorigin="anonymous"
@@ -21,6 +22,21 @@ export class MovieCard extends React.Component {
             <Card.Title>{movie.Title}</Card.Title>
             <Card.Text>{movie.Description}</Card.Text>
           </Card.Body>
+
+          {profile ? (
+            <Button
+              type="button"
+              className="clickable mx-auto mb-2 rounded button-color border border-dark"
+              onClick={(event) => {
+                event.preventDefault();
+                movieDelete();
+              }}
+            >
+              Remove
+            </Button>
+          ) : (
+            ''
+          )}
         </Card>
       </Link>
     );
@@ -45,4 +61,6 @@ MovieCard.propTypes = {
     }).isRequired,
     Featured: PropTypes.bool.isRequired,
   }).isRequired,
+  profile: PropTypes.bool.isRequired,
+  movieDelete: PropTypes.func,
 };
