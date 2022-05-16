@@ -1,7 +1,7 @@
 import React from 'react';
 import axios from 'axios';
 
-import PropTypes from 'prop-types';
+import PropTypes, { nominalTypeHack } from 'prop-types';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Button from 'react-bootstrap/Button';
@@ -125,6 +125,20 @@ export class MovieView extends React.Component {
               </Col>
               <Col xs={9} className="value ">
                 {movie.Description}
+              </Col>
+            </Row>
+            <Row>
+              <Col>
+                <Button
+                  className="clickable button-color toggle-button border border-dark rounded mt-5 ml-5"
+                  onClick={() => {
+                    this.toggleFavorite(user, movie, onUserChange);
+                  }}
+                >
+                  {this.isMovieFavorite(user, movie)
+                    ? 'Remove from Favorites'
+                    : 'Add to Favorites'}{' '}
+                </Button>
               </Col>
             </Row>
           </Col>
