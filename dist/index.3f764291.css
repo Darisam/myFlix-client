@@ -4,7 +4,7 @@
   height: 100%;
 }
 
-.clickable:hover {
+.movie-link:hover {
   text-decoration: none;
 }
 .movie-poster {
@@ -68,5 +68,6 @@ header h1 {
 .button-color {
   background-color: #feb139 !important;
   color: black !important;
+  box-shadow: 2px 2px 2px !important;
 }
 /*# sourceMappingURL=index.3f764291.css.map */
