@@ -245,17 +245,13 @@ export class ProfileView extends React.Component {
                 xs={10}
                 className="p-2  text-center"
               >
-                <MovieCard movie={movie} />
-
-                <Button
-                  className="button-color border border-dark mt-1 rounded clickable"
-                  type="button"
-                  onClick={() =>
-                    this.handleMovieDelete(user, movie._id, onUserChange)
-                  }
-                >
-                  Remove
-                </Button>
+                <MovieCard
+                  movie={movie}
+                  profile={true}
+                  movieDelete={() => {
+                    this.handleMovieDelete(user, movie._id, onUserChange);
+                  }}
+                />
               </Col>
             ))}
         </Row>

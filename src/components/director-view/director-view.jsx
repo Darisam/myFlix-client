@@ -50,7 +50,7 @@ export function DirectorView(props) {
               xs={10}
               className="p-2"
             >
-              <MovieCard movie={movie} />
+              <MovieCard movie={movie} profile={false} />
             </Col>
           ))}
       </Row>
