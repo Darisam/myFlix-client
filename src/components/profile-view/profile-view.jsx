@@ -92,7 +92,12 @@ class ProfileView extends React.Component {
             }
           })
           .catch((error) => {
-            console.error(error);
+            console.error(error.response);
+            if ((error.response.status = 400)) {
+              this.setState({
+                usernameErr: 'The username ' + error.response.data,
+              });
+            }
           });
       }
     }

@@ -53,6 +53,9 @@ export function RegistrationView() {
         })
         .catch((error) => {
           console.error(error.response);
+          if ((error.response.status = 400)) {
+            setUsernameErr('The username ' + error.response.data);
+          }
         });
     }
   };
