@@ -147,7 +147,12 @@ class ProfileView extends React.Component {
       <div className="profile-view">
         <Row>
           <Col xs="auto">
-            <Button size="lg" onClick={onBackClick}>
+            <Button
+              size="lg"
+              onClick={() => {
+                history.back();
+              }}
+            >
               &lt;
             </Button>
           </Col>

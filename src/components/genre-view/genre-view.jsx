@@ -8,8 +8,6 @@ import { connect } from 'react-redux';
 
 import { MovieCard } from '../movie-card/movie-card';
 
-export function GenreView(props) {
-  const { genre, movies, onBackClick } = props;
 const mapStateToProps = (state) => {
   return { movies: state.movies };
 };
@@ -21,7 +19,12 @@ function GenreView(props) {
     <div class="genre-view">
       <Row>
         <Col sm={2}>
-          <Button size="lg" onClick={onBackClick}>
+          <Button
+            size="lg"
+            onClick={() => {
+              history.back();
+            }}
+          >
             &lt;
           </Button>
         </Col>

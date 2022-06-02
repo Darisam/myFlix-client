@@ -129,14 +129,11 @@ class MainView extends React.Component {
 
           <Route
             path="/movies/:movieId"
-            render={({ match, history }) => {
+            render={({ match }) => {
               return (
                 <MovieView
                   movie={movies.find((m) => m._id === match.params.movieId)}
                   user={user}
-                  onBackClick={() => {
-                    history.goBack();
-                  }}
                 />
               );
             }}
@@ -144,7 +141,7 @@ class MainView extends React.Component {
 
           <Route
             path="/directors/:directorName"
-            render={({ match, history }) => {
+            render={({ match }) => {
               return (
                 <DirectorView
                   director={
@@ -153,9 +150,6 @@ class MainView extends React.Component {
                     ).Director
                   }
                   movies={movies}
-                  onBackClick={() => {
-                    history.goBack();
-                  }}
                 />
               );
             }}
@@ -163,7 +157,7 @@ class MainView extends React.Component {
 
           <Route
             path="/genres/:genreName"
-            render={({ match, history }) => {
+            render={({ match }) => {
               return (
                 <GenreView
                   genre={
@@ -171,9 +165,6 @@ class MainView extends React.Component {
                       .Genre
                   }
                   movies={movies}
-                  onBackClick={() => {
-                    history.goBack();
-                  }}
                 />
               );
             }}
@@ -181,15 +172,12 @@ class MainView extends React.Component {
 
           <Route
             path={`/users/${username}`}
-            render={({ history }) => {
+            render={() => {
               return (
                 <Col>
                   <ProfileView
                     movies={movies}
                     user={user}
-                    onBackClick={() => {
-                      history.goBack();
-                    }}
                     onLoggedOut={() => {
                       this.onLoggedOut();
                     }}

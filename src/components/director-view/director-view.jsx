@@ -8,18 +8,23 @@ import { connect } from 'react-redux';
 
 import { MovieCard } from '../movie-card/movie-card';
 
-  const { director, movies, onBackClick } = props;
 const mapStateToProps = (state) => {
   return { movies: state.movies };
 };
 
 function DirectorView(props) {
+  const { director, movies } = props;
 
   return (
     <div class="director-view">
       <Row>
         <Col sm={2}>
-          <Button size="lg" onClick={onBackClick}>
+          <Button
+            size="lg"
+            onClick={() => {
+              history.back();
+            }}
+          >
             &lt;
           </Button>
         </Col>
