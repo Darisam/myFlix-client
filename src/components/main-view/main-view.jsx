@@ -74,6 +74,9 @@ class MainView extends React.Component {
       })
       .catch((error) => {
         console.error(error);
+        if (error.response.status === 401) {
+          this.props.setUser(null); // If the bearer token has expired, go to login.
+        }
       });
   }
 
