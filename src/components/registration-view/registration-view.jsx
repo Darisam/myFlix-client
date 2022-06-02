@@ -16,11 +16,15 @@ export function RegistrationView() {
   const [emailErr, setEmailErr] = useState('');
 
   const newUserValid = () => {
-    let usernameValid = username !== '';
+    let usernameValid = /^[a-zA-Z0-9]{5,}$/.test(username);
     let passwordValid = password.length > 7;
     let emailValid = email.includes('@');
 
-    setUsernameErr(usernameValid ? '' : 'Please enter a Username.');
+    setUsernameErr(
+      usernameValid
+        ? ''
+        : 'Please enter a Username containing at least five characters and only alphanumeric characters.'
+    );
     setPasswordErr(
       passwordValid
         ? ''

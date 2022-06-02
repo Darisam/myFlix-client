@@ -32,18 +32,24 @@ class ProfileView extends React.Component {
   // The data are valid if they pass the test or if they weren't changed at all.
 
   updatedDataValid() {
-    let { updatedPassword, updatedEmail } = this.state;
+    let { updatedUsername, updatedPassword, updatedEmail } = this.state;
+    let usernameValid = updatedUsername
+      ? /^[a-zA-Z0-9]{5,}$/.test(updatedUsername)
+      : true;
     let passwordValid = updatedPassword ? updatedPassword.length > 7 : true;
     let emailValid = updatedEmail ? updatedEmail.includes('@') : true;
     this.setState({
+      usernameErr: usernameValid
+        ? ''
+        : 'A username needs to contain at least five characters and only alphanumeric characters.',
+
       passwordErr: passwordValid
         ? ''
         : 'You need to set a password that contains at least eight characters.',
-    });
-    this.setState({
+
       emailErr: emailValid ? '' : 'Please enter a valid email address.',
     });
-    return passwordValid && emailValid;
+    return usernameValid && passwordValid && emailValid;
   }
 
   handleUpdate(username, onUserChange) {
@@ -130,8 +136,8 @@ class ProfileView extends React.Component {
   }
 
   render() {
-    const { passwordErr, emailErr } = this.state;
     const { onLoggedOut, user, movies } = this.props;
+    const { usernameErr, emailErr, passwordErr } = this.state;
 
     if (Object.values(user).length === 0) {
       return <div></div>;
@@ -164,6 +170,7 @@ class ProfileView extends React.Component {
                     });
                   }}
                 />
+                {usernameErr && <p className="text-warning">{usernameErr}</p>}
               </Form.Group>
               <Form.Group controlId="updateEmail" className="mb-3">
                 <Form.Label>E-mail:</Form.Label>
