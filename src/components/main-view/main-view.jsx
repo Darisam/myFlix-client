@@ -129,25 +129,7 @@ export class MainView extends React.Component {
             exact
             path="/"
             render={() => {
-              return (
-                <div>
-                  <Row className="justify-content-center mt-4">
-                    {movies.map((movie) => (
-                      <Col
-                        key={movie._id}
-                        xl={2}
-                        lg={3}
-                        md={4}
-                        sm={6}
-                        xs={10}
-                        className="p-2"
-                      >
-                        <MovieCard movie={movie} profile={false} />
-                      </Col>
-                    ))}
-                  </Row>
-                </div>
-              );
+              return <MoviesList movies={movies} />;
             }}
           />
 
