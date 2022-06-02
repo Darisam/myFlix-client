@@ -13,6 +13,7 @@ import './login-view.scss';
 export function LoginView(props) {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const [error, setError] = useState('');
 
   const handleSubmit = () => {
     axios({
@@ -25,13 +26,15 @@ export function LoginView(props) {
         props.onLoggedIn(data);
       })
       .catch((error) => {
-        console.error(error);
+        console.error(error.response);
+        setError('Login failed: ' + error.response.data.info);
       });
   };
 
   return (
     <div className="login-form mt-4">
       <Form>
+        {error && <p className="text-warning">{error}</p>}
         <Form.Group controlId="formUsername" className="mb-3">
           <Form.Label>Username:</Form.Label>
           <Form.Control
