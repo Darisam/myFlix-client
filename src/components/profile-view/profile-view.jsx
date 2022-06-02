@@ -52,7 +52,7 @@ class ProfileView extends React.Component {
     return usernameValid && passwordValid && emailValid;
   }
 
-  handleUpdate(username, onUserChange) {
+  handleUpdate(username) {
     if (this.updatedDataValid()) {
       const {
         updatedUsername,
@@ -85,7 +85,7 @@ class ProfileView extends React.Component {
         })
           .then((response) => {
             console.log(response.data);
-            onUserChange(response.data);
+            this.props.setUser(response.data);
             if (updatedUsername) {
               localStorage.setItem('username', response.data.Username);
               window.location.replace(`/users/${response.data.Username}`);
