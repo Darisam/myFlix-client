@@ -97,6 +97,4 @@ DirectorView.propTypes = {
     Birth: PropTypes.string.isRequired,
     Death: PropTypes.string,
   }).isRequired,
-
-  onBackClick: PropTypes.func.isRequired,
 };

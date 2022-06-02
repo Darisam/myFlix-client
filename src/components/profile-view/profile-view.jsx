@@ -275,10 +275,6 @@ class ProfileView extends React.Component {
   }
 }
 
-ProfileView.propTypes = {
-  onLoggedOut: PropTypes.func.isRequired,
-  onBackClick: PropTypes.func.isRequired,
-  onUserChange: PropTypes.func.isRequired,
 let mapStateToProps = (state) => {
   return {
     user: state.user,
@@ -292,6 +288,7 @@ export default connect(mapStateToProps, {
   addToFavorites,
 })(ProfileView);
 
+ProfileView.propTypes = {
   movies: PropTypes.arrayOf(
     PropTypes.shape({
       _id: PropTypes.string.isRequired,
@@ -319,4 +316,9 @@ export default connect(mapStateToProps, {
     Birthday: PropTypes.string,
     FavoriteMovies: PropTypes.array.isRequired,
   }).isRequired,
+
+  onLoggedOut: PropTypes.func.isRequired,
+  setUser: PropTypes.func.isRequired,
+  removeFromFavorites: PropTypes.func.isRequired,
+  addToFavorites: PropTypes.func.isRequired,
 };

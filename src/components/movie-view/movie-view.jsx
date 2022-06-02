@@ -187,6 +187,6 @@ MovieView.propTypes = {
     FavoriteMovies: PropTypes.array.isRequired,
   }).isRequired,
 
-  onUserChange: PropTypes.func.isRequired,
-  onBackClick: PropTypes.func.isRequired,
+  addToFavorites: PropTypes.func.isRequired,
+  removeFromFavorites: PropTypes.func.isRequired,
 };

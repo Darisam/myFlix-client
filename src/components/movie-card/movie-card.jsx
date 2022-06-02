@@ -61,6 +61,7 @@ MovieCard.propTypes = {
     }).isRequired,
     Featured: PropTypes.bool.isRequired,
   }).isRequired,
-  profile: PropTypes.bool.isRequired,
-  movieDelete: PropTypes.func,
+
+  fromProfileView: PropTypes.bool.isRequired,
+  deleteMovie: PropTypes.func,
 };
