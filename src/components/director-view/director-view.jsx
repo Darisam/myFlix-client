@@ -4,11 +4,16 @@ import PropTypes from 'prop-types';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Button from 'react-bootstrap/Button';
+import { connect } from 'react-redux';
 
 import { MovieCard } from '../movie-card/movie-card';
 
-export function DirectorView(props) {
   const { director, movies, onBackClick } = props;
+const mapStateToProps = (state) => {
+  return { movies: state.movies };
+};
+
+function DirectorView(props) {
 
   return (
     <div class="director-view">
@@ -57,6 +62,8 @@ export function DirectorView(props) {
     </div>
   );
 }
+
+export default connect(mapStateToProps)(DirectorView);
 
 DirectorView.propTypes = {
   movies: PropTypes.arrayOf(

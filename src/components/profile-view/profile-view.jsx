@@ -6,10 +6,17 @@ import Button from 'react-bootstrap/Button';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import { PropTypes } from 'prop-types';
+import { connect } from 'react-redux';
 
 import { MovieCard } from '../movie-card/movie-card';
+import {
+  setUser,
+  removeFromFavorites,
+  addToFavorites,
+} from '../../actions/actions';
 
-export class ProfileView extends React.Component {
+class ProfileView extends React.Component {
+
   constructor() {
     super();
     this.state = {
@@ -104,7 +111,7 @@ export class ProfileView extends React.Component {
       });
   }
 
-  handleMovieDelete(user, movieId, onUserChange) {
+  handleMovieDelete(user, movieId) {
     const accessToken = localStorage.getItem('token');
     let username = user.Username;
 
@@ -114,12 +121,8 @@ export class ProfileView extends React.Component {
       headers: { Authorization: `Bearer ${accessToken}` },
     })
       .then((response) => {
-        console.log(response);
-        let newFavorites = user.FavoriteMovies.filter(
-          (entry) => entry !== movieId
-        );
-        user.FavoriteMovies = newFavorites;
-        onUserChange(user);
+        console.log(response.data);
+        this.props.removeFromFavorites(movieId);
       })
       .catch((error) => {
         console.error(error);
@@ -127,8 +130,8 @@ export class ProfileView extends React.Component {
   }
 
   render() {
-    const { onBackClick, onLoggedOut, onUserChange, user, movies } = this.props;
     const { passwordErr, emailErr } = this.state;
+    const { onLoggedOut, user, movies } = this.props;
 
     if (Object.values(user).length === 0) {
       return <div></div>;
@@ -204,7 +207,7 @@ export class ProfileView extends React.Component {
                     className="button-color border border-dark rounded mt-3 clickable"
                     type="button"
                     onClick={() => {
-                      this.handleUpdate(user.Username, onUserChange);
+                      this.handleUpdate(user.Username);
                     }}
                   >
                     Update
@@ -264,6 +267,18 @@ ProfileView.propTypes = {
   onLoggedOut: PropTypes.func.isRequired,
   onBackClick: PropTypes.func.isRequired,
   onUserChange: PropTypes.func.isRequired,
+let mapStateToProps = (state) => {
+  return {
+    user: state.user,
+    movies: state.movies,
+  };
+};
+
+export default connect(mapStateToProps, {
+  setUser,
+  removeFromFavorites,
+  addToFavorites,
+})(ProfileView);
 
   movies: PropTypes.arrayOf(
     PropTypes.shape({

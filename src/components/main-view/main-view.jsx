@@ -3,10 +3,12 @@ import axios from 'axios';
 
 import { BrowserRouter as Router, Route, Redirect } from 'react-router-dom';
 import Row from 'react-bootstrap/Row';
+import { connect } from 'react-redux';
 import Col from 'react-bootstrap/Col';
 
 import { MovieCard } from '../movie-card/movie-card';
 import { MovieView } from '../movie-view/movie-view';
+import { setMovies, setUser } from '../../actions/actions';
 import { LoginView } from '../login-view/login-view';
 import { RegistrationView } from '../registration-view/registration-view';
 import { ProfileView } from '../profile-view/profile-view';
@@ -18,15 +20,7 @@ import { Menubar } from '../menubar/menubar';
 object holding the user data if the user is logged in, and undefined while we don't know
 anything yet. */
 
-export class MainView extends React.Component {
-  constructor() {
-    super();
-    this.state = {
-      movies: [],
-      user: undefined,
-    };
-  }
-
+class MainView extends React.Component {
   componentDidMount() {
     let accessToken = localStorage.getItem('token');
     if (accessToken) {
@@ -34,7 +28,7 @@ export class MainView extends React.Component {
       this.getUser(accessToken, username);
       this.getMovies(accessToken);
     } else {
-      this.setState({ user: null });
+      this.props.setUser(null);
     }
   }
 
@@ -43,14 +37,14 @@ export class MainView extends React.Component {
     let username = authData.user.Username;
     localStorage.setItem('token', authData.token);
     localStorage.setItem('username', username);
-    this.setState({ user: authData.user });
+    this.props.setUser(authData.user);
     this.getMovies(authData.token);
   }
 
   onLoggedOut() {
     localStorage.removeItem('token');
     localStorage.removeItem('username');
-    this.setState({ user: null });
+    this.props.setUser(null);
     window.location.replace('/');
   }
 
@@ -61,7 +55,7 @@ export class MainView extends React.Component {
       headers: { Authorization: `Bearer ${token}` },
     })
       .then((response) => {
-        this.setState({ movies: response.data });
+        this.props.setMovies(response.data);
       })
       .catch(function (error) {
         console.error(error);
@@ -76,7 +70,7 @@ export class MainView extends React.Component {
     })
       .then((response) => {
         console.log(response.data);
-        this.setState({ user: response.data });
+        this.props.setUser(response.data);
       })
       .catch((error) => {
         console.error(error);
@@ -84,7 +78,7 @@ export class MainView extends React.Component {
   }
 
   render() {
-    const { movies, user } = this.state;
+    const { movies, user } = this.props;
 
     if (user === null) {
       return (
@@ -113,7 +107,7 @@ export class MainView extends React.Component {
       );
     }
 
-    if (user && movies.length > 0) {
+    if (Object.values(user).length > 0 && movies.length > 0) {
       const username = user.Username;
 
       return (
@@ -142,9 +136,6 @@ export class MainView extends React.Component {
                   user={user}
                   onBackClick={() => {
                     history.goBack();
-                  }}
-                  onUserChange={(user) => {
-                    this.setState({ user: user });
                   }}
                 />
               );
@@ -217,3 +208,9 @@ export class MainView extends React.Component {
     }
   }
 }
+
+let mapStateToProps = (state) => {
+  return { movies: state.movies, user: state.user };
+};
+
+export default connect(mapStateToProps, { setMovies, setUser })(MainView);

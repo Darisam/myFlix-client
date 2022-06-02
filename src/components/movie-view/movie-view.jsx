@@ -6,15 +6,18 @@ import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Button from 'react-bootstrap/Button';
 import { Link } from 'react-router-dom';
+import { connect } from 'react-redux';
+
+import { addToFavorites, removeFromFavorites } from '../../actions/actions';
 
 import './movie-view.scss';
 
-export class MovieView extends React.Component {
+class MovieView extends React.Component {
   isMovieFavorite(user, movie) {
     return user.FavoriteMovies.includes(movie._id);
   }
 
-  toggleFavorite(user, movie, onUserChange) {
+  toggleFavorite(user, movie) {
     const username = user.Username;
     const accessToken = localStorage.getItem('token');
 
@@ -26,12 +29,8 @@ export class MovieView extends React.Component {
         responseType: 'text',
       })
         .then((response) => {
-          console.log(response);
-          let newFavorites = user.FavoriteMovies.filter(
-            (item) => item !== movie._id
-          );
-          user.FavoriteMovies = newFavorites;
-          onUserChange(user);
+          console.log(response.data);
+          this.props.removeFromFavorites(movie._id);
         })
         .catch((error) => {
           console.erorr(error);
@@ -43,9 +42,8 @@ export class MovieView extends React.Component {
         headers: { Authorization: `Bearer ${accessToken}` },
       })
         .then((response) => {
-          console.log(response);
-          user.FavoriteMovies.push(movie._id);
-          onUserChange(user);
+          console.log(response.data);
+          this.props.addToFavorites(movie._id);
         })
         .catch((error) => {
           console.error(error);
@@ -54,7 +52,7 @@ export class MovieView extends React.Component {
   }
 
   render() {
-    const { movie, user, onBackClick, onUserChange } = this.props;
+    const { movie, user } = this.props;
 
     return (
       <div className="movie-view">
@@ -72,7 +70,7 @@ export class MovieView extends React.Component {
               size="lg"
               className="like-button clickable"
               onClick={() => {
-                this.toggleFavorite(user, movie, onUserChange);
+                this.toggleFavorite(user, movie);
               }}
             >
               {this.isMovieFavorite(user, movie) ? '\u2605' : '\u2606'}{' '}
@@ -132,7 +130,7 @@ export class MovieView extends React.Component {
                 <Button
                   className="clickable button-color toggle-button border border-dark rounded mt-5 ml-5"
                   onClick={() => {
-                    this.toggleFavorite(user, movie, onUserChange);
+                    this.toggleFavorite(user, movie);
                   }}
                 >
                   {this.isMovieFavorite(user, movie)
@@ -147,6 +145,15 @@ export class MovieView extends React.Component {
     );
   }
 }
+
+const mapStateToProps = (state) => {
+  return { user: state.user };
+};
+
+export default connect(mapStateToProps, {
+  addToFavorites,
+  removeFromFavorites,
+})(MovieView);
 
 MovieView.propTypes = {
   movie: PropTypes.shape({

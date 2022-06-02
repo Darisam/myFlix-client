@@ -4,11 +4,18 @@ import PropTypes from 'prop-types';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Button from 'react-bootstrap/Button';
+import { connect } from 'react-redux';
 
 import { MovieCard } from '../movie-card/movie-card';
 
 export function GenreView(props) {
   const { genre, movies, onBackClick } = props;
+const mapStateToProps = (state) => {
+  return { movies: state.movies };
+};
+
+function GenreView(props) {
+  const { genre, movies } = props;
 
   return (
     <div class="genre-view">
@@ -54,6 +61,8 @@ export function GenreView(props) {
     </div>
   );
 }
+
+export default connect(mapStateToProps)(GenreView);
 
 GenreView.propTypes = {
   movies: PropTypes.arrayOf(
