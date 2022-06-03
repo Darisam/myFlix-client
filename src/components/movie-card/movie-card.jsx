@@ -9,7 +9,9 @@ import './movie-card.scss';
 
 export class MovieCard extends React.Component {
   render() {
-    const { movie, profile, movieDelete } = this.props;
+    // fromProfileView is true if MovieCard is called from the ProfileView and if so, deleteMovie removes the movie from
+    // the favorite movies.
+    const { movie, fromProfileView, deleteMovie } = this.props;
     return (
       <Link to={`/movies/${movie._id}`} className="card-color movie-link">
         <Card className="movie-card card-color clickable">
@@ -23,13 +25,13 @@ export class MovieCard extends React.Component {
             <Card.Text>{movie.Description}</Card.Text>
           </Card.Body>
 
-          {profile ? (
+          {fromProfileView ? (
             <Button
               type="button"
               className="clickable mx-auto mb-2 rounded button-color border border-dark"
               onClick={(event) => {
                 event.preventDefault();
-                movieDelete();
+                deleteMovie();
               }}
             >
               Remove

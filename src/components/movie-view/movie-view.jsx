@@ -1,7 +1,7 @@
 import React from 'react';
 import axios from 'axios';
 
-import PropTypes, { nominalTypeHack } from 'prop-types';
+import PropTypes from 'prop-types';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Button from 'react-bootstrap/Button';
@@ -33,7 +33,7 @@ class MovieView extends React.Component {
           this.props.removeFromFavorites(movie._id);
         })
         .catch((error) => {
-          console.erorr(error);
+          console.error(error);
         });
     } else {
       axios({
@@ -122,7 +122,7 @@ class MovieView extends React.Component {
               </Col>
             </Row>
 
-            <Row className="movie-description">
+            <Row>
               <Col xs={3} className="label ">
                 Description:{' '}
               </Col>

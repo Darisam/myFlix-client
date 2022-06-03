@@ -47,9 +47,8 @@ export function RegistrationView() {
         data: userData,
       })
         .then((response) => {
-          const reply = response.data;
-          console.log(reply);
-          window.open('/', '_self');
+          console.log(response.data);
+          window.location.assign('/');
         })
         .catch((error) => {
           console.error(error.response);

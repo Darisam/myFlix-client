@@ -22,8 +22,8 @@ export function LoginView(props) {
       params: { Username: username, Password: password },
     })
       .then((response) => {
-        const data = response.data;
-        props.onLoggedIn(data);
+        console.log(response.data);
+        props.onLoggedIn(response.data);
       })
       .catch((error) => {
         console.error(error.response);

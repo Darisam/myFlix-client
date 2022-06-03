@@ -16,7 +16,7 @@ function GenreView(props) {
   const { genre, movies } = props;
 
   return (
-    <div class="genre-view">
+    <div className="genre-view">
       <Row>
         <Col sm={2}>
           <Button
@@ -57,7 +57,7 @@ function GenreView(props) {
               xs={10}
               className="p-2"
             >
-              <MovieCard movie={movie} profile={false} />
+              <MovieCard movie={movie} fromProfileView={false} />
             </Col>
           ))}
       </Row>

@@ -16,7 +16,7 @@ function DirectorView(props) {
   const { director, movies } = props;
 
   return (
-    <div class="director-view">
+    <div className="director-view">
       <Row>
         <Col sm={2}>
           <Button
@@ -60,7 +60,7 @@ function DirectorView(props) {
               xs={10}
               className="p-2"
             >
-              <MovieCard movie={movie} profile={false} />
+              <MovieCard movie={movie} fromProfileView={false} />
             </Col>
           ))}
       </Row>

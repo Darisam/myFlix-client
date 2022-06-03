@@ -2,8 +2,8 @@ import React from 'react';
 
 import Navbar from 'react-bootstrap/Navbar';
 import { NavLink } from 'react-router-dom';
-import { Nav } from 'react-bootstrap';
-import PropTypes, { string } from 'prop-types';
+import Nav from 'react-bootstrap/Nav';
+import PropTypes from 'prop-types';
 
 import './menubar.scss';
 
@@ -11,7 +11,7 @@ export function Menubar(props) {
   const { username, onLoggedOut } = props;
 
   if (!username) {
-    return;
+    return <div></div>;
   }
 
   return (

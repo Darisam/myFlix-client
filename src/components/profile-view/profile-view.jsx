@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import axios from 'axios';
 
 import Form from 'react-bootstrap/Form';
@@ -16,6 +16,7 @@ import {
 } from '../../actions/actions';
 
 class ProfileView extends React.Component {
+  // The data are valid if they pass the test or if they weren't changed at all.
 
   constructor() {
     super();
@@ -113,9 +114,8 @@ class ProfileView extends React.Component {
       responseType: 'text',
     })
       .then((response) => {
-        console.log(response);
+        console.log(response.data);
         onLoggedOut();
-        window.location.replace('/');
       })
       .catch((error) => {
         console.error(error);
@@ -168,16 +168,14 @@ class ProfileView extends React.Component {
 
         <Row className="justify-content-center">
           <Col md={8}>
-            <Form className="mt-4 update-form">
+            <Form className="mt-4">
               <Form.Group controlId="updateUsername" className="mb-3">
                 <Form.Label>Username:</Form.Label>
                 <Form.Control
                   type="text"
                   defaultValue={user.Username}
                   onChange={(event) => {
-                    this.setState({
-                      updatedUsername: event.target.value || '',
-                    });
+                    this.setState({ updatedUsername: event.target.value });
                   }}
                 />
                 {usernameErr && <p className="text-warning">{usernameErr}</p>}
@@ -188,7 +186,7 @@ class ProfileView extends React.Component {
                   type="email"
                   defaultValue={user.Email}
                   onChange={(event) => {
-                    this.setState({ updatedEmail: event.target.value || '' });
+                    this.setState({ updatedEmail: event.target.value });
                   }}
                 />
                 {emailErr && <p className="text-warning">{emailErr}</p>}
@@ -198,9 +196,7 @@ class ProfileView extends React.Component {
                 <Form.Control
                   type="password"
                   onChange={(event) => {
-                    this.setState({
-                      updatedPassword: event.target.value || '',
-                    });
+                    this.setState({ updatedPassword: event.target.value });
                   }}
                 />
                 {passwordErr && <p className="text-warning">{passwordErr}</p>}
@@ -211,9 +207,7 @@ class ProfileView extends React.Component {
                   type="date"
                   defaultValue={user.Birthday ? user.Birthday.slice(0, 10) : ''}
                   onChange={(event) => {
-                    this.setState({
-                      updatedBirthday: event.target.value || '',
-                    });
+                    this.setState({ updatedBirthday: event.target.value });
                   }}
                 />
               </Form.Group>
@@ -267,9 +261,9 @@ class ProfileView extends React.Component {
               >
                 <MovieCard
                   movie={movie}
-                  profile={true}
-                  movieDelete={() => {
-                    this.handleMovieDelete(user, movie._id, onUserChange);
+                  fromProfileView={true}
+                  deleteMovie={() => {
+                    this.handleMovieDelete(user, movie._id);
                   }}
                 />
               </Col>

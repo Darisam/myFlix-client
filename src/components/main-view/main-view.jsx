@@ -1,24 +1,20 @@
 import React from 'react';
 import axios from 'axios';
 
-import { BrowserRouter as Router, Route, Redirect } from 'react-router-dom';
-import Row from 'react-bootstrap/Row';
 import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
+import { BrowserRouter as Router, Route } from 'react-router-dom';
 import Col from 'react-bootstrap/Col';
 
-import { MovieCard } from '../movie-card/movie-card';
-import { MovieView } from '../movie-view/movie-view';
 import { setMovies, setUser } from '../../actions/actions';
+import MoviesList from '../movies-list/movies-list';
+import MovieView from '../movie-view/movie-view';
 import { LoginView } from '../login-view/login-view';
 import { RegistrationView } from '../registration-view/registration-view';
-import { ProfileView } from '../profile-view/profile-view';
-import { DirectorView } from '../director-view/director-view';
-import { GenreView } from '../genre-view/genre-view';
+import ProfileView from '../profile-view/profile-view';
+import DirectorView from '../director-view/director-view';
+import GenreView from '../genre-view/genre-view';
 import { Menubar } from '../menubar/menubar';
-
-/* User has three possible states: Null if we know the viewer is not logged in , an 
-object holding the user data if the user is logged in, and undefined while we don't know
-anything yet. */
 
 class MainView extends React.Component {
   componentDidMount() {
@@ -33,7 +29,6 @@ class MainView extends React.Component {
   }
 
   onLoggedIn(authData) {
-    console.log(authData);
     let username = authData.user.Username;
     localStorage.setItem('token', authData.token);
     localStorage.setItem('username', username);
@@ -183,9 +178,6 @@ class MainView extends React.Component {
                     user={user}
                     onLoggedOut={() => {
                       this.onLoggedOut();
-                    }}
-                    onUserChange={(user) => {
-                      this.setState({ user: user });
                     }}
                   />
                 </Col>
