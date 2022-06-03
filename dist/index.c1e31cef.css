@@ -1,0 +1,73 @@
+.movie-poster {
+  background-color: white;
+}
+
+.like-button {
+  color: #ffff00 !important;
+  background-color: transparent !important;
+  border-style: none;
+  padding: 0px;
+  box-shadow: none !important;
+  font-size: 2.125em;
+}
+
+.link {
+  color: #f6f54d !important;
+}
+
+.link:hover {
+  text-decoration: underline;
+}
+.login-form {
+  max-width: 30rem;
+  margin: auto;
+}
+.registration-form {
+  max-width: 30rem;
+  margin: auto;
+}
+.movie-card {
+  max-width: 20rem;
+  margin: auto;
+  height: 100%;
+}
+
+.movie-link:hover {
+  text-decoration: none;
+}
+.navlink:hover {
+  text-decoration: underline !important;
+}
+body {
+  background-color: #143f6b;
+  color: white;
+}
+
+header {
+  background-color: black;
+  color: #f55353;
+  text-align: center;
+  height: 4rem;
+}
+
+header h1 {
+  font-size: 1.875rem;
+  font-weight: bolder;
+  line-height: 4rem;
+}
+
+.clickable:hover {
+  filter: brightness(0.7);
+}
+
+.card-color {
+  color: black !important;
+  background-color: #f6f54d !important;
+}
+
+.button-color {
+  background-color: #feb139 !important;
+  color: black !important;
+  box-shadow: 2px 2px 2px !important;
+}
+/*# sourceMappingURL=index.c1e31cef.css.map */
