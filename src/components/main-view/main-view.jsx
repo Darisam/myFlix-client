@@ -14,7 +14,7 @@ import { RegistrationView } from '../registration-view/registration-view';
 import ProfileView from '../profile-view/profile-view';
 import DirectorView from '../director-view/director-view';
 import GenreView from '../genre-view/genre-view';
-import { Menubar } from '../menubar/menubar';
+import Menubar from '../menubar/menubar';
 
 class MainView extends React.Component {
   componentDidMount() {

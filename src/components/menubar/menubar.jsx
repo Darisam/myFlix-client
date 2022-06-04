@@ -3,16 +3,18 @@ import React from 'react';
 import Navbar from 'react-bootstrap/Navbar';
 import { NavLink } from 'react-router-dom';
 import Nav from 'react-bootstrap/Nav';
+import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
 import './menubar.scss';
 
-export function Menubar(props) {
-  const { username, onLoggedOut } = props;
+const mapStateToProps = (state) => {
+  return { user: state.user };
+};
 
-  if (!username) {
-    return <div></div>;
-  }
+function Menubar(props) {
+  const { user, onLoggedOut } = props;
+  const username = user.Username;
 
   return (
     <Navbar
@@ -56,7 +58,15 @@ export function Menubar(props) {
   );
 }
 
+export default connect(mapStateToProps)(Menubar);
+
 Menubar.propTypes = {
-  username: PropTypes.string.isRequired,
+  user: PropTypes.shape({
+    _id: PropTypes.string.isRequired,
+    Username: PropTypes.string.isRequired,
+    Password: PropTypes.string.isRequired,
+    Birthday: PropTypes.string,
+    FavoriteMovies: PropTypes.array.isRequired,
+  }).isRequired,
   onLoggedOut: PropTypes.func.isRequired,
 };
