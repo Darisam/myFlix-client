@@ -24442,7 +24442,7 @@ var _registrationView = require("../registration-view/registration-view");
 var _profileView = _interopRequireDefault(require("../profile-view/profile-view"));
 var _directorView = _interopRequireDefault(require("../director-view/director-view"));
 var _genreView = _interopRequireDefault(require("../genre-view/genre-view"));
-var _menubar = require("../menubar/menubar");
+var _menubar = _interopRequireDefault(require("../menubar/menubar"));
 function _interopRequireDefault(obj) {
     return obj && obj.__esModule ? obj : {
         "default": obj
@@ -24537,7 +24537,8 @@ var MainView1 = /*#__PURE__*/ function(_React$Component) {
     _createClass(MainView2, [
         {
             key: "componentDidMount",
-            value: function componentDidMount() {
+            value: // Otherwise the userdata are loaded from the backend and user is set to the received data.
+            function componentDidMount() {
                 var accessToken = localStorage.getItem('token');
                 if (accessToken) {
                     var username = localStorage.getItem('username');
@@ -24596,8 +24597,8 @@ var MainView1 = /*#__PURE__*/ function(_React$Component) {
                     console.log(response.data);
                     _this2.props.setUser(response.data);
                 })["catch"](function(error) {
-                    console.error(error);
-                    if (error.response.status === 401) _this2.props.setUser(null); // If the bearer token has expired, go to login.
+                    console.error(error); // If the bearer token has expired, go to login.
+                    if (error.response.status === 401) _this2.props.setUser(null);
                 });
             }
         },
@@ -24611,8 +24612,8 @@ var MainView1 = /*#__PURE__*/ function(_React$Component) {
                     path: "/",
                     render: function render1() {
                         return(/*#__PURE__*/ _react["default"].createElement(_loginView.LoginView, {
-                            onLoggedIn: function onLoggedIn(username) {
-                                _this3.onLoggedIn(username);
+                            onLoggedIn: function onLoggedIn(authData) {
+                                _this3.onLoggedIn(authData);
                             }
                         }));
                     }
@@ -24624,8 +24625,7 @@ var MainView1 = /*#__PURE__*/ function(_React$Component) {
                 })));
                 if (Object.values(user).length > 0 && movies.length > 0) {
                     var username = user.Username;
-                    return(/*#__PURE__*/ _react["default"].createElement(_reactRouterDom.BrowserRouter, null, /*#__PURE__*/ _react["default"].createElement(_menubar.Menubar, {
-                        username: username,
+                    return(/*#__PURE__*/ _react["default"].createElement(_reactRouterDom.BrowserRouter, null, /*#__PURE__*/ _react["default"].createElement(_menubar["default"], {
                         onLoggedOut: function onLoggedOut() {
                             _this3.onLoggedOut();
                         }
@@ -24633,9 +24633,7 @@ var MainView1 = /*#__PURE__*/ function(_React$Component) {
                         exact: true,
                         path: "/",
                         render: function render1() {
-                            return(/*#__PURE__*/ _react["default"].createElement(_moviesList["default"], {
-                                movies: movies
-                            }));
+                            return(/*#__PURE__*/ _react["default"].createElement(_moviesList["default"], null));
                         }
                     }), /*#__PURE__*/ _react["default"].createElement(_reactRouterDom.Route, {
                         path: "/movies/:movieId",
@@ -24644,8 +24642,7 @@ var MainView1 = /*#__PURE__*/ function(_React$Component) {
                             return(/*#__PURE__*/ _react["default"].createElement(_movieView["default"], {
                                 movie: movies.find(function(m) {
                                     return m._id === match.params.movieId;
-                                }),
-                                user: user
+                                })
                             }));
                         }
                     }), /*#__PURE__*/ _react["default"].createElement(_reactRouterDom.Route, {
@@ -24655,8 +24652,7 @@ var MainView1 = /*#__PURE__*/ function(_React$Component) {
                             return(/*#__PURE__*/ _react["default"].createElement(_directorView["default"], {
                                 director: movies.find(function(m) {
                                     return m.Director.Name === match.params.directorName;
-                                }).Director,
-                                movies: movies
+                                }).Director
                             }));
                         }
                     }), /*#__PURE__*/ _react["default"].createElement(_reactRouterDom.Route, {
@@ -24666,16 +24662,13 @@ var MainView1 = /*#__PURE__*/ function(_React$Component) {
                             return(/*#__PURE__*/ _react["default"].createElement(_genreView["default"], {
                                 genre: movies.find(function(m) {
                                     return m.Genre.Name === match.params.genreName;
-                                }).Genre,
-                                movies: movies
+                                }).Genre
                             }));
                         }
                     }), /*#__PURE__*/ _react["default"].createElement(_reactRouterDom.Route, {
                         path: "/users/".concat(username),
                         render: function render1() {
                             return(/*#__PURE__*/ _react["default"].createElement(_Col["default"], null, /*#__PURE__*/ _react["default"].createElement(_profileView["default"], {
-                                movies: movies,
-                                user: user,
                                 onLoggedOut: function onLoggedOut() {
                                     _this3.onLoggedOut();
                                 }
@@ -35289,7 +35282,6 @@ function _getPrototypeOf(o) {
 var ProfileView1 = /*#__PURE__*/ function(_React$Component) {
     _inherits(ProfileView2, _React$Component);
     var _super = _createSuper(ProfileView2);
-    // The data are valid if they pass the test or if they weren't changed at all.
     function ProfileView2() {
         var _this;
         _classCallCheck(this, ProfileView2);
@@ -35379,10 +35371,9 @@ var ProfileView1 = /*#__PURE__*/ function(_React$Component) {
         },
         {
             key: "handleMovieDelete",
-            value: function handleMovieDelete(user, movieId) {
+            value: function handleMovieDelete(username, movieId) {
                 var _this3 = this;
                 var accessToken = localStorage.getItem('token');
-                var username = user.Username;
                 _axios["default"]({
                     method: 'delete',
                     url: "https://klaus-movies.herokuapp.com/users/".concat(username, "/favorites/").concat(movieId),
@@ -35507,7 +35498,7 @@ var ProfileView1 = /*#__PURE__*/ function(_React$Component) {
                         movie: movie,
                         fromProfileView: true,
                         deleteMovie: function deleteMovie() {
-                            _this4.handleMovieDelete(user, movie._id);
+                            _this4.handleMovieDelete(user.Username, movie._id);
                         }
                     })));
                 }))));
@@ -35987,7 +35978,6 @@ try {
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
-exports.GenreView = GenreView;
 exports["default"] = void 0;
 var _react = _interopRequireDefault(require("react"));
 var _propTypes = _interopRequireDefault(require("prop-types"));
@@ -36090,11 +36080,12 @@ try {
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
-exports.Menubar = Menubar;
+exports["default"] = void 0;
 var _react = _interopRequireDefault(require("react"));
 var _Navbar = _interopRequireDefault(require("react-bootstrap/Navbar"));
 var _reactRouterDom = require("react-router-dom");
 var _Nav = _interopRequireDefault(require("react-bootstrap/Nav"));
+var _reactRedux = require("react-redux");
 var _propTypes = _interopRequireDefault(require("prop-types"));
 require("./menubar.scss");
 function _interopRequireDefault(obj) {
@@ -36102,9 +36093,14 @@ function _interopRequireDefault(obj) {
         "default": obj
     };
 }
+var mapStateToProps = function mapStateToProps1(state) {
+    return {
+        user: state.user
+    };
+};
 function Menubar(props) {
-    var username = props.username, onLoggedOut = props.onLoggedOut;
-    if (!username) return(/*#__PURE__*/ _react["default"].createElement("div", null));
+    var user = props.user, onLoggedOut = props.onLoggedOut;
+    var username = user.Username;
     return(/*#__PURE__*/ _react["default"].createElement(_Navbar["default"], {
         variant: "dark",
         collapseOnSelect: true,
@@ -36137,8 +36133,16 @@ function Menubar(props) {
     }, "Log Out")))));
 }
 _c = Menubar;
+var _default = _reactRedux.connect(mapStateToProps)(Menubar);
+exports["default"] = _default;
 Menubar.propTypes = {
-    username: _propTypes["default"].string.isRequired,
+    user: _propTypes["default"].shape({
+        _id: _propTypes["default"].string.isRequired,
+        Username: _propTypes["default"].string.isRequired,
+        Password: _propTypes["default"].string.isRequired,
+        Birthday: _propTypes["default"].string,
+        FavoriteMovies: _propTypes["default"].array.isRequired
+    }).isRequired,
     onLoggedOut: _propTypes["default"].func.isRequired
 };
 var _c;
@@ -36149,7 +36153,7 @@ $RefreshReg$(_c, "Menubar");
   window.$RefreshReg$ = prevRefreshReg;
   window.$RefreshSig$ = prevRefreshSig;
 }
-},{"react":"6TuXu","react-bootstrap/Navbar":"eYZQl","react-router-dom":"cpyQW","prop-types":"1tgq3","@parcel/transformer-react-refresh-wrap/lib/helpers/helpers.js":"kWUaH","./menubar.scss":"lVC3L","react-bootstrap/Nav":"io07g"}],"eYZQl":[function(require,module,exports) {
+},{"react":"6TuXu","react-bootstrap/Navbar":"eYZQl","react-router-dom":"cpyQW","prop-types":"1tgq3","@parcel/transformer-react-refresh-wrap/lib/helpers/helpers.js":"kWUaH","./menubar.scss":"lVC3L","react-bootstrap/Nav":"io07g","react-redux":"2L0if"}],"eYZQl":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 var _classnames = require("classnames");
@@ -40745,31 +40749,7 @@ function user() {
             return state;
     }
 }
-/*function newUserdata(state = {}, action) {
-  switch (action.type) {
-    case SET_NEW_USERNAME:
-      return { ...state, Username: action.value };
-    case SET_NEW_PASSWORD:
-      return { ...state, Password: action.value };
-    case SET_NEW_EMAIL:
-      return { ...state, Email: action.value };
-    case SET_NEW_BIRTHDAY:
-      return { ...state, Birthday: action.value };
-    case CLEAR_USERDATA:
-      return {};
-    default:
-      return state;
-  }
-}
-
-function error(state = {}, action) {
-  switch (action.type) {
-    case SET_ERROR:
-      return action.value;
-    default:
-      return state;
-  }
-}*/ var moviesApp = _redux.combineReducers({
+var moviesApp = _redux.combineReducers({
     visibilityFilter: visibilityFilter,
     movies: movies,
     user: user
