@@ -10,4 +10,4 @@ The application was created to get familiar with Single Page Applications in gen
 
 ## Details
 
-This application is written in React. It uses React Bootstrap for styling, React Redux for state management and Axios to communicate with the API.
+myFlix is written in React. It uses React Bootstrap for styling, React Redux for state management and Axios to communicate with the API.

@@ -16,8 +16,6 @@ import {
 } from '../../actions/actions';
 
 class ProfileView extends React.Component {
-  // The data are valid if they pass the test or if they weren't changed at all.
-
   constructor() {
     super();
     this.state = {
@@ -106,7 +104,6 @@ class ProfileView extends React.Component {
 
   handleUserDelete(username, onLoggedOut) {
     const accessToken = localStorage.getItem('token');
-
     axios({
       url: `https://klaus-movies.herokuapp.com/users/${username}`,
       method: 'delete',
@@ -122,10 +119,8 @@ class ProfileView extends React.Component {
       });
   }
 
-  handleMovieDelete(user, movieId) {
+  handleMovieDelete(username, movieId) {
     const accessToken = localStorage.getItem('token');
-    let username = user.Username;
-
     axios({
       method: 'delete',
       url: `https://klaus-movies.herokuapp.com/users/${username}/favorites/${movieId}`,
@@ -263,7 +258,7 @@ class ProfileView extends React.Component {
                   movie={movie}
                   fromProfileView={true}
                   deleteMovie={() => {
-                    this.handleMovieDelete(user, movie._id);
+                    this.handleMovieDelete(user.Username, movie._id);
                   }}
                 />
               </Col>

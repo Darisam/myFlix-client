@@ -17,6 +17,9 @@ import GenreView from '../genre-view/genre-view';
 import Menubar from '../menubar/menubar';
 
 class MainView extends React.Component {
+  // If the visitor to the site doesn't have a valid JSON web token, user is set to null.
+  // Otherwise the userdata are loaded from the backend and user is set to the received data.
+
   componentDidMount() {
     let accessToken = localStorage.getItem('token');
     if (accessToken) {
@@ -69,8 +72,9 @@ class MainView extends React.Component {
       })
       .catch((error) => {
         console.error(error);
+        // If the bearer token has expired, go to login.
         if (error.response.status === 401) {
-          this.props.setUser(null); // If the bearer token has expired, go to login.
+          this.props.setUser(null);
         }
       });
   }
@@ -87,8 +91,8 @@ class MainView extends React.Component {
             render={() => {
               return (
                 <LoginView
-                  onLoggedIn={(username) => {
-                    this.onLoggedIn(username);
+                  onLoggedIn={(authData) => {
+                    this.onLoggedIn(authData);
                   }}
                 />
               );
