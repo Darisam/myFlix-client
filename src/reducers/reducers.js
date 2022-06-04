@@ -51,32 +51,6 @@ function user(state = {}, action) {
   }
 }
 
-/*function newUserdata(state = {}, action) {
-  switch (action.type) {
-    case SET_NEW_USERNAME:
-      return { ...state, Username: action.value };
-    case SET_NEW_PASSWORD:
-      return { ...state, Password: action.value };
-    case SET_NEW_EMAIL:
-      return { ...state, Email: action.value };
-    case SET_NEW_BIRTHDAY:
-      return { ...state, Birthday: action.value };
-    case CLEAR_USERDATA:
-      return {};
-    default:
-      return state;
-  }
-}
-
-function error(state = {}, action) {
-  switch (action.type) {
-    case SET_ERROR:
-      return action.value;
-    default:
-      return state;
-  }
-}*/
-
 const moviesApp = combineReducers({
   visibilityFilter,
   movies,
