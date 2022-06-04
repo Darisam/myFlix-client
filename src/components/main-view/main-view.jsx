@@ -111,7 +111,6 @@ class MainView extends React.Component {
       return (
         <Router>
           <Menubar
-            username={username}
             onLoggedOut={() => {
               this.onLoggedOut();
             }}
@@ -121,7 +120,7 @@ class MainView extends React.Component {
             exact
             path="/"
             render={() => {
-              return <MoviesList movies={movies} />;
+              return <MoviesList />;
             }}
           />
 
@@ -131,7 +130,6 @@ class MainView extends React.Component {
               return (
                 <MovieView
                   movie={movies.find((m) => m._id === match.params.movieId)}
-                  user={user}
                 />
               );
             }}
@@ -147,7 +145,6 @@ class MainView extends React.Component {
                       (m) => m.Director.Name === match.params.directorName
                     ).Director
                   }
-                  movies={movies}
                 />
               );
             }}
@@ -162,7 +159,6 @@ class MainView extends React.Component {
                     movies.find((m) => m.Genre.Name === match.params.genreName)
                       .Genre
                   }
-                  movies={movies}
                 />
               );
             }}
@@ -174,8 +170,6 @@ class MainView extends React.Component {
               return (
                 <Col>
                   <ProfileView
-                    movies={movies}
-                    user={user}
                     onLoggedOut={() => {
                       this.onLoggedOut();
                     }}
