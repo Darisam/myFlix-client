@@ -35080,6 +35080,7 @@ function RegistrationView() {
     var _useState11 = _react.useState(''), _useState12 = _slicedToArray(_useState11, 2), passwordErr = _useState12[0], setPasswordErr = _useState12[1];
     var _useState13 = _react.useState(''), _useState14 = _slicedToArray(_useState13, 2), emailErr = _useState14[0], setEmailErr = _useState14[1];
     var newUserValid = function newUserValid1() {
+        // Check whether the username consists of at least five alphanumeric chracters.
         var usernameValid = /^[a-zA-Z0-9]{5,}$/.test(username);
         var passwordValid = password.length > 7;
         var emailValid = email.includes('@');
@@ -35313,8 +35314,8 @@ var ProfileView1 = /*#__PURE__*/ function(_React$Component) {
             }
         },
         {
-            key: "handleUpdate",
-            value: function handleUpdate(username) {
+            key: "handleUserUpdate",
+            value: function handleUserUpdate(username) {
                 var _this2 = this;
                 if (this.updatedDataValid()) {
                     var _this$state2 = this.state, updatedUsername = _this$state2.updatedUsername, updatedPassword = _this$state2.updatedPassword, updatedEmail = _this$state2.updatedEmail, updatedBirthday = _this$state2.updatedBirthday;
@@ -35467,7 +35468,7 @@ var ProfileView1 = /*#__PURE__*/ function(_React$Component) {
                     className: "button-color border border-dark rounded mt-3 clickable",
                     type: "button",
                     onClick: function onClick() {
-                        _this4.handleUpdate(user.Username);
+                        _this4.handleUserUpdate(user.Username);
                     }
                 }, "Update")), /*#__PURE__*/ _react["default"].createElement(_Col["default"], {
                     xs: "auto",
