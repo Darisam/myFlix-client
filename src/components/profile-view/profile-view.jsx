@@ -51,7 +51,7 @@ class ProfileView extends React.Component {
     return usernameValid && passwordValid && emailValid;
   }
 
-  handleUpdate(username) {
+  handleUserUpdate(username) {
     if (this.updatedDataValid()) {
       const {
         updatedUsername,
@@ -213,7 +213,7 @@ class ProfileView extends React.Component {
                     className="button-color border border-dark rounded mt-3 clickable"
                     type="button"
                     onClick={() => {
-                      this.handleUpdate(user.Username);
+                      this.handleUserUpdate(user.Username);
                     }}
                   >
                     Update

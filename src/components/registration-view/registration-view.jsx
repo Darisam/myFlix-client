@@ -16,6 +16,7 @@ export function RegistrationView() {
   const [emailErr, setEmailErr] = useState('');
 
   const newUserValid = () => {
+    // Check whether the username consists of at least five alphanumeric chracters.
     let usernameValid = /^[a-zA-Z0-9]{5,}$/.test(username);
     let passwordValid = password.length > 7;
     let emailValid = email.includes('@');
